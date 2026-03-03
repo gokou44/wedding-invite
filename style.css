@@ -47,7 +47,7 @@ body {
 /* MAP */
 
 .map {
-  position: relative;
+ position: relative;
   width: 90%;
   max-width: 520px;
   height: 240px;
@@ -56,12 +56,12 @@ body {
   border-radius: 14px;
   overflow: hidden;
 
-  /* sky */
+  /* SKY */
   background: linear-gradient(
     to bottom,
     #b3e5fc 0%,
-    #e1f5fe 45%,
-    #c8e6c9 46%,
+    #e1f5fe 40%,
+    #c8e6c9 41%,
     #a5d6a7 100%
   );
 }
