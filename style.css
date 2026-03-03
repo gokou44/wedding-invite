@@ -49,14 +49,56 @@ body {
 .map {
   position: relative;
   width: 90%;
-  max-width: 500px;
-  height: 200px;
+  max-width: 520px;
+  height: 240px;
   margin: auto;
-  background: #a5d6a7;
   border: 4px solid #2e7d32;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
+
+  /* sky */
+  background: linear-gradient(
+    to bottom,
+    #b3e5fc 0%,
+    #e1f5fe 45%,
+    #c8e6c9 46%,
+    #a5d6a7 100%
+  );
 }
+
+/* ===== FAR HILLS ===== */
+.map::before {
+  content: "";
+  position: absolute;
+  bottom: 70px;
+  left: 0;
+  width: 200%;
+  height: 80px;
+  background:
+    radial-gradient(circle at 50px 80px, #81c784 60px, transparent 61px),
+    radial-gradient(circle at 200px 80px, #66bb6a 70px, transparent 71px),
+    radial-gradient(circle at 350px 80px, #81c784 65px, transparent 66px);
+  opacity: 0.6;
+}
+
+/* ===== FLOWER FIELD ===== */
+.map::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+
+  background-image:
+    radial-gradient(circle, #ffffff 2px, transparent 3px),
+    radial-gradient(circle, #ffffff 2px, transparent 3px),
+    radial-gradient(circle, #ffffff 2px, transparent 3px);
+
+  background-size: 40px 40px, 55px 55px, 70px 70px;
+  background-position: 0 0, 10px 20px, 20px 10px;
+}
+
 
 /* Couple sprite animated */
 
@@ -104,4 +146,21 @@ button:hover {
 @media (max-width: 600px) {
   .title { font-size: 24px; }
   .names { font-size: 20px; }
+}
+
+/* ===== PATH ===== */
+.path {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: repeating-linear-gradient(
+    to right,
+    #8d6e63,
+    #8d6e63 12px,
+    #a1887f 12px,
+    #a1887f 24px
+  );
+  opacity: 0.7;
 }
