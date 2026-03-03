@@ -1,43 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Save the Date</title>
+  <title>SAVE THE DATE</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
- <canvas id="petals"></canvas>
+  <canvas id="gameCanvas"></canvas>
 
-  <div class="container">
-    <h1 class="title">💍 SAVE THE DATE 💍</h1>
+<audio id="bgm" src="assets/music.mp3" loop></audio>
 
-    <div class="names">
-      Ngọc Linh ❤️ Huy Tùng
-    </div>
+  <script src="game.js"></script>
 
-    <div class="location">
-      📍 King12 - Trống Đồng Cảnh Hồ
-    </div>
-
-    <div id="countdown" class="countdown"></div>
-
-    <!-- MAP -->
-    <div class="map">
-  <div class="path"></div>
-  <div id="couple" class="couple"></div>
-  <div class="church">⛪</div>
-    </div>
-
-    <!-- MUSIC -->
-    <div class="music-box">
-      <button id="musicBtn">▶ Phát nhạc</button>
-      <audio id="bgMusic" loop>
-        <source src="music.mp3" type="audio/mpeg">
-      </audio>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
 </body>
 </html>
