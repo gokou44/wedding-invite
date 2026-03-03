@@ -1,118 +1,94 @@
-// ================= COUNTDOWN + MOVE =================
+/* ===== Countdown ===== */
+/* ===== Canvas ===== */
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-const weddingDate = new Date("2026-04-28T16:00:00").getTime();
-const countdownEl = document.getElementById("countdown");
-const couple = document.getElementById("couple");
+const sky = new Image();
+sky.src = 'assets/sky.png';
 
-const startDate = new Date("2025-01-01").getTime();
-const totalDuration = weddingDate - startDate;
+const far = new Image();
+far.src = 'assets/flower_far.png';
 
-function updateCountdown() {
-  const now = new Date().getTime();
-  const distance = weddingDate - now;
+const near = new Image();
+near.src = 'assets/flower_near.png';
 
-  if (distance <= 0) {
-    countdownEl.innerHTML = "🎉 Đã tới ngày cưới!";
-    couple.style.left = "85%";
-    return;
-  }
+const sprite = new Image();
+sprite.src = 'assets/wedding_chibi.png';
 
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((distance / (1000 * 60)) % 60);
-  const seconds = Math.floor((distance / 1000) % 60);
+let progress = 0;
+let frame = 0;
 
-  countdownEl.innerHTML =
-    `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
-
-  // progress move
-  const passed = now - startDate;
-  let progress = passed / totalDuration;
-  progress = Math.max(0, Math.min(1, progress));
-  couple.style.left = (progress * 85) + "%";
-}
-
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-
-// ================= AUTO PLAY MUSIC =================
-
-const musicBtn = document.getElementById("musicBtn");
-const music = document.getElementById("bgMusic");
-let playing = false;
-let userInteracted = false;
-
-function startMusicOnce() {
-  if (!userInteracted) {
-    music.play().catch(()=>{});
-    musicBtn.textContent = "⏸ Tạm dừng";
-    playing = true;
-    userInteracted = true;
-  }
-}
-
-document.addEventListener("click", startMusicOnce);
-document.addEventListener("touchstart", startMusicOnce);
-
-musicBtn.addEventListener("click", () => {
-  if (!playing) {
-    music.play();
-    musicBtn.textContent = "⏸ Tạm dừng";
-  } else {
-    music.pause();
-    musicBtn.textContent = "▶ Phát nhạc";
-  }
-  playing = !playing;
-});
-
-
-// ================= PETAL FALL =================
-
-const canvas = document.getElementById("petals");
-const ctx = canvas.getContext("2d");
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-
+/* ===== Falling flowers ===== */
 const petals = [];
-const PETAL_COUNT = 25;
-
-for (let i = 0; i < PETAL_COUNT; i++) {
+for (let i = 0; i < 40; i++) {
   petals.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    size: 6 + Math.random() * 6,
-    speed: 0.5 + Math.random(),
-    drift: Math.random() * 0.5 - 0.25
+    speed: 0.3 + Math.random() * 0.7,
   });
 }
 
-function drawPetal(p) {
-  ctx.fillStyle = "#a5d6a7";
-  ctx.fillRect(p.x, p.y, p.size, p.size);
-}
-
-function updatePetals() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+function drawPetals() {
+  ctx.fillStyle = '#ffffff';
   petals.forEach(p => {
     p.y += p.speed;
-    p.x += p.drift;
-
-    if (p.y > canvas.height) {
-      p.y = -10;
-      p.x = Math.random() * canvas.width;
-    }
-
-    drawPetal(p);
+    if (p.y > canvas.height) p.y = -10;
+    ctx.fillRect(p.x, p.y, 2, 2);
   });
-
-  requestAnimationFrame(updatePetals);
 }
 
-updatePetals();
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.drawImage(sky, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(far, 0, canvas.height - 220, canvas.width, 220);
+  ctx.drawImage(near, 0, canvas.height - 140, canvas.width, 140);
+
+  drawPetals();
+
+  const total = weddingDate - new Date('2025-01-01');
+  const current = new Date() - new Date('2025-01-01');
+  progress = Math.min(1, current / total);
+
+  const x = progress * (canvas.width - 120);
+  const y = canvas.height - 170;
+
+  frame = (frame + 0.15) % 4;
+  const frameIndex = Math.floor(frame);
+
+  ctx.drawImage(
+    sprite,
+    frameIndex * 64,
+    0,
+    64,
+    64,
+    x,
+    y,
+    96,
+    96
+  );
+
+  requestAnimationFrame(animate);
+}
+
+sprite.onload = () => animate();
+
+/* ===== Music ===== */
+const audio = document.getElementById('bgm');
+const btn = document.getElementById('playBtn');
+
+let started = false;
+
+function tryPlay() {
+  if (!started) {
+    audio.play().catch(() => {});
+    started = true;
+  }
+}
+
+document.body.addEventListener('click', tryPlay);
+
+btn.onclick = () => {
+  if (audio.paused) audio.play();
+  else audio.pause();
+};
