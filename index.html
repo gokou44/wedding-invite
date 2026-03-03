@@ -1,18 +1,116 @@
 <!DOCTYPE html>
-
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>SAVE THE DATE</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Save the Date - Ngọc Linh & Huy Tùng</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(#c8f7c5, #ffffff);
+      overflow: hidden;
+      text-align: center;
+      color: #2f4f4f;
+    }
+
+    h1 {
+      margin-top: 16px;
+      font-size: 32px;
+      color: #3a7d44;
+    }
+
+    #countdown {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    #gameCanvas {
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      border-top: 3px solid #a8e6cf;
+      border-bottom: 3px solid #a8e6cf;
+      background: #eafff5;
+      image-rendering: pixelated;
+    }
+
+    #musicHint {
+      margin-top: 8px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    #playBtn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background: #7ed957;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
+  <h1>💍 SAVE THE DATE 💍</h1>
+  <div id="countdown"></div>
 
-<audio id="bgm" src="assets/music.mp3" loop></audio>
+  <canvas id="gameCanvas" width="900" height="420"></canvas>
 
-  <script src="game.js"></script>
+  <div id="musicHint">Chạm màn hình để phát nhạc</div>
+  <button id="playBtn">Play / Pause</button>
 
-</body>
-</html>
+  <audio id="bgm" loop>
+    <source src="assets/music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    const weddingDate = new Date('2026-04-28T16:00:00');
+    const countdownEl = document.getElementById('countdown');
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = weddingDate - now;
+
+      if (diff <= 0) {
+        countdownEl.innerHTML = '🎉 Hôm nay là ngày cưới! 🎉';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownEl.innerHTML =
+        `⏳ ${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // ===== Canvas setup =====
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const sky = new Image();
+    sky.src = 'assets/sky.png';
+
+    const far = new Image();
+    far.src = 'assets/flower_far.png';
+
+    const near = new Image();
+    near.src = 'assets/flower_near.png';
+
+    const sprite = new Image();
+    sprite.src = 'assets/wedding_chibi.png';
+
+    let progress = 0;
+    let frame = 0;
+
+    // ===== Falling flowers =====
+    const petals = [];
+    for (let i = 0; i < 40; i++) {
+      p
